@@ -1,0 +1,111 @@
+[gd_scene load_steps=10 format=3 uid="uid://bbefbm752eti0"]
+
+[ext_resource type="Script" uid="uid://rnb8yvnorwan" path="res://main.gd" id="1_ig7tw"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ig7tw"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ig7tw"]
+size = Vector2(4.1, 4.1)
+subdivide_width = 5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_ig7tw")
+size = Vector3(1, 0.01, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_h2yge"]
+material = SubResource("StandardMaterial3D_0xm2m")
+size = Vector3(0.01, 1, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bvp3"]
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lquwl"]
+material = SubResource("StandardMaterial3D_1bvp3")
+size = Vector3(0.01, 0.01, 1)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.707107, 0.194905, -0.679715, 0, 0.961262, 0.275637, 0.707107, 0.194905, -0.679715, -2, 1, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ig7tw")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ig7tw")
+
+[node name="SeasonPivot" type="Node3D" parent="."]
+
+[node name="SunPivot" type="Node3D" parent="SeasonPivot"]
+
+[node name="Light" type="DirectionalLight3D" parent="SeasonPivot/SunPivot"]
+
+[node name="X" type="MeshInstance3D" parent="SeasonPivot/SunPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_0xm2m")
+skeleton = NodePath("../../../MeshInstance3D")
+
+[node name="Y" type="MeshInstance3D" parent="SeasonPivot/SunPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_h2yge")
+skeleton = NodePath("../../../MeshInstance3D")
+
+[node name="Z" type="MeshInstance3D" parent="SeasonPivot/SunPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_lquwl")
+skeleton = NodePath("../../../MeshInstance3D")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 500.0
+offset_bottom = -352.0
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="DayLabel" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Daytime (exact middle is sunset in summer)"
+
+[node name="Day" type="HSlider" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 2.0
+step = 0.01
+tick_count = 21
+ticks_on_borders = true
+
+[node name="SeasonLabel" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Season (0 = Summer, 1 = Winter)"
+
+[node name="Season" type="HSlider" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+tick_count = 11
+ticks_on_borders = true
